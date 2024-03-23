@@ -1,5 +1,6 @@
 package com.example.ecommerce;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,8 +25,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
+        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
     }
 
     public void singUp(View view) {
+        startActivity(new Intent(LoginActivity.this,RegistrationActivity.class));
+
     }
+
 }
