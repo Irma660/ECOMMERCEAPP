@@ -7,17 +7,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -27,10 +24,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registration);
 
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         auth = FirebaseAuth.getInstance();
         name = findViewById(R.id.name);
@@ -51,16 +47,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         if (TextUtils.isEmpty(userName)){
-            Toast.makeText(this, "Ingrese su nombre!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ingrese su nombre", Toast.LENGTH_SHORT).show();
             return;
 
         }
         if (TextUtils.isEmpty(userEmail)){
-            Toast.makeText(this, "Introduce tu correo!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Introduce tu correo", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(userPassword)){
-            Toast.makeText(this, "Ingrese su contraseña!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ingrese su contraseña", Toast.LENGTH_SHORT).show();
             return;
 
         }
@@ -69,16 +65,13 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
            }
         auth.createUserWithEmailAndPassword(userEmail,userPassword)
-                        .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                        .addOnCompleteListener(RegistrationActivity.this, task -> {
 
-                                if (task.isSuccessful()){
-                                    Toast.makeText(RegistrationActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
-                                }else {
-                                    Toast.makeText(RegistrationActivity.this, "Registro fallido"+task.getException(), Toast.LENGTH_SHORT).show();
-                                }
+                            if (task.isSuccessful()){
+                                Toast.makeText(RegistrationActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+                            }else {
+                                Toast.makeText(RegistrationActivity.this, "Registro fallido"+task.getException(), Toast.LENGTH_SHORT).show();
                             }
                         });
     }
